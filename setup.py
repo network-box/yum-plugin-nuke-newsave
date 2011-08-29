@@ -16,7 +16,7 @@ setup(name='yum-plugin-nuke-newsave',
         author_email='bochecha@fedoraproject.org',
         url='',
         license='GPLv3+',
-        packages=[],
+        py_modules=['nuke-newsave'],
         requires = [
             # The following are not available as distutils modules
             # 'yum',
