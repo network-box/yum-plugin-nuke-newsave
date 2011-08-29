@@ -1,9 +1,33 @@
 import os
 
 from distutils.core import setup
+from distutils.command.install import install as _install
 
 here = os.path.abspath(os.path.dirname(__file__))
 README = open(os.path.join(here, 'README.txt')).read()
+
+
+class install(_install):
+    """Specialized installer.
+
+    The YUM plugins are not installed in the regular Python modules tree.
+    """
+    def initialize_options(self):
+        _install.initialize_options(self)
+        # Remove this line and self.root defaults to '.', which is not desired
+        self.root = '/'
+
+    def run(self):
+        # Install the plugin code
+        yumplugins_coderoot = os.path.join(self.root, "usr/lib/yum-plugins/")
+        self.mkpath(yumplugins_coderoot, mode=755)
+        self.copy_file('nuke-newsave.py', yumplugins_coderoot)
+
+        # Install the plugin conf
+        yumplugins_confroot = os.path.join(self.root, "etc/yum/pluginconf.d/")
+        self.mkpath(yumplugins_confroot, mode=755)
+        self.copy_file('nuke-newsave.conf', yumplugins_confroot)
+
 
 setup(name='yum-plugin-nuke-newsave',
         version='0.1',
@@ -28,4 +52,7 @@ setup(name='yum-plugin-nuke-newsave',
             # them here seems like the nice thing to do for package maintainers
             # "yum>=3.2.29", # Not tested with older releases (that means RHEL6)
             ],
+        cmdclass={
+            'install': install,
+            },
         )
