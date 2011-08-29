@@ -1,1 +1,1 @@
-include *.conf
+include *.conf *.txt
