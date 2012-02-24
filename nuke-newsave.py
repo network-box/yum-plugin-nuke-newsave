@@ -25,10 +25,16 @@ from yum.plugins import TYPE_CORE
 requires_api_version = '2.6'
 plugin_type = (TYPE_CORE,)
 
+always_nuke = False
 
 def posttrans_hook(conduit):
+    global always_nuke
+
     opts, args = conduit.getCmdLine()
     conf = conduit.getConf()
+
+    if not always_nuke and not (opts and opts.nuke_newsave):
+        return
 
     ts = conduit.getTsInfo()
     for tsmem in ts.getMembers():
@@ -50,3 +56,15 @@ def posttrans_hook(conduit):
                     save_conf = "%s.rpmsave" % file_name
                     if os.path.exists(save_conf):
                         os.unlink(save_conf)
+
+def config_hook(conduit):
+    global always_nuke
+    always_nuke = conduit.confBool('main', 'always_nuke', default=False)
+    parser = conduit.getOptParser()
+    if parser:
+        if hasattr(parser, 'plugin_option_group'):
+            parser = parser.plugin_option_group
+
+        parser.add_option('', '--nuke_newsave', dest='nuke_newsave',
+                action='store_true', default=False,
+                help="remove the .rpmnew/.rpmsave files after a yum transaction")
