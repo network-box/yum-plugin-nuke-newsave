@@ -30,7 +30,7 @@ class install(_install):
 
 
 setup(name='yum-plugin-nuke-newsave',
-        version='1.0',
+        version='2.0',
         description='Automatically remove the .rpmnew/.rpmsave files after a yum transaction',
         long_description=README,
         classifiers=[
