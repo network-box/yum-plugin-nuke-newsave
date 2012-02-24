@@ -52,20 +52,18 @@ Usage
 
 .. warning::
 
-    Installing this plugin will change the way YUM handles package updates in a
-    way that could be dangerous if it is not the desired behavior. Install at
-    your own risk.
+    I can't stress this enough: running this plugin will change the way YUM
+    handles package updates in a way that could be dangerous if it is not the
+    desired behavior. Use at your own risk.
 
-The point of installing this plugin is to automate a repetitive and annoying
-task: removing all those pesky .rpmnew/.rpmsave files. [#f1]_
+The plugin is enabled by default, but won't do anything unless it is told to.
 
-This is why the plugin is enabled by default, to allow its usage with a minimum
-of effort: install it, and forget about it.
+There are two ways to let the plugin know you want it to act on the *.rpmnew
+and *.rpmsave files:
 
-However, it can be easily disabled, either by:
-
-* removing the plugin, or
-* setting `enabled=0' in `/etc/yum/pluginconf.d/nuke-newsave.conf'
+* only for one transaction, passing the ``--nuke_newsave`` option to YUM
+* permanently, by setting the ``always_nuke`` option to ``1`` in the
+* ``/etc/yum/pluginconf.d/nuke-newsave.conf`` file.
 
 
 Legal
