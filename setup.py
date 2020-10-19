@@ -4,7 +4,7 @@ from distutils.core import setup
 from distutils.command.install import install as _install
 
 here = os.path.abspath(os.path.dirname(__file__))
-README = open(os.path.join(here, 'README.txt')).read()
+README = open(os.path.join(here, 'README.md')).read()
 
 
 class install(_install):
@@ -20,12 +20,12 @@ class install(_install):
     def run(self):
         # Install the plugin code
         yumplugins_coderoot = os.path.join(self.root, "usr/lib/yum-plugins/")
-        self.mkpath(yumplugins_coderoot, mode=755)
+        self.mkpath(yumplugins_coderoot, mode=0755)
         self.copy_file('nuke-newsave.py', yumplugins_coderoot)
 
         # Install the plugin conf
         yumplugins_confroot = os.path.join(self.root, "etc/yum/pluginconf.d/")
-        self.mkpath(yumplugins_confroot, mode=755)
+        self.mkpath(yumplugins_confroot, mode=0755)
         self.copy_file('nuke-newsave.conf', yumplugins_confroot)
 
 
